@@ -24,7 +24,7 @@ Using **Homomorphic Processing**, we operate in the log-spectral domain where th
 
 Let $C_S$ and $C_F$ be the cepstra of the source and filter signals, respectively. We apply a low-pass lifter $L_{low}$ and a high-pass lifter $L_{high}$ to extract the desired components:
 
-$$\text{Cepstrum of } Y_m = L_{low}(C_F) + L_{high}(C_S)$$
+$$\text{Cepstrum of } Y_m = L_{low}(C_{F,m}) + L_{high}(C_{S,m})$$
 
 This means the synthesized magnitude spectrum $|Y_m(\omega)|$ consists of:
 - **The Envelope** from $F_m$ (Low-quefrency / Vocal tract)
