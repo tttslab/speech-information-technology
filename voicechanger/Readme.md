@@ -22,7 +22,7 @@ We decompose both input signals into their magnitude and phase components:
 ### 2. Hybrid Magnitude Synthesis (Liftering)
 Using **Homomorphic Processing**, we operate in the log-spectral domain where the spectral envelope and excitation are additive. The magnitude of the synthesized signal $|Y_m(\omega)|$ is constructed as follows:
 
-Let $C_S$ and $C_F$ be the cepstra of the source and filter signals, respectively. We apply a low-pass lifter $L_{low}$ and a high-pass lifter $L_{high}$ to extract the desired components:
+Let $C_{S,m}$ and $C_{F,m}$ be the cepstra of the source and filter signals for frame $m$. We apply a low-pass lifter $L_{low}$ and a high-pass lifter $L_{high}$ to extract and combine the desired components:
 
 $$\text{Cepstrum of } Y_m = L_{low}(C_{F,m}) + L_{high}(C_{S,m})$$
 
