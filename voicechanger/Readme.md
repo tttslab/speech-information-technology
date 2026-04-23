@@ -4,25 +4,41 @@ This project provides a demonstration of the **Source-Filter Model** of speech p
 
 By extracting "Source information" and "Spectral envelope (Filter) information" from two different audio files and recombining them, this program allows users to experience the process of voice transformation (voice changing).
 
-## Algorithm Overview
+## Algorithm Details: How the two files are combined
 
-The system processes audio using the following steps:
+The core of this demo is to create a hybrid signal $Y_m$ by transplanting the **spectral envelope** of the Filter signal ($F_m$) onto the **excitation source** of the Source signal ($S_m$).
 
-1.  **Analysis**: Two input signals (Source and Filter) are analyzed on a frame-by-frame basis using cepstral analysis.
-2.  **Separation**: Using **liftering** in the cepstral domain, the signal is decomposed into:
-    * **Low-quefrency components**: Representing the vocal tract characteristics (spectral envelope/formants).
-    * **High-quefrency components**: Representing the excitation source (fine structure/pitch).
-3.  **Synthesis**: 
-    * The **high-quefrency components** (pitch) from the **Source input** are combined with the **low-quefrency components** (voice quality) from the **Filter input**.
-    * The original phase information from the Source input is preserved to maintain the pitch structure.
-    * The final waveform is reconstructed in the time domain using the **Overlap-Add (OLA)** method.
+### 1. Analysis and Decomposition
+We decompose both input signals into their magnitude and phase components:
 
-### Implementation Note for Students
-This demo uses **Homomorphic Signal Processing**. The convolution of the source and filter in the time domain becomes an addition in the log-spectral (and thus cepstral) domain:
+- **Source Signal ($s_m[n]$)**: Provides the "voice height" and "timing."
+  $$S_m(\omega) = |S_m(\omega)| \exp(j \angle S_m(\omega))$$
+  *(Used for: High-quefrency magnitude and Phase information)*
 
-$$\log |X(\omega)| = \log |E(\omega)| + \log |H(\omega)|$$
+- **Filter Signal ($f_m[n]$)**: Provides the "vocal quality" (vowels).
+  $$F_m(\omega) = |F_m(\omega)| \exp(j \angle F_m(\omega))$$
+  *(Used for: Low-quefrency magnitude only)*
 
-This property allows us to "de-convolve" and manipulate speech characteristics with simple arithmetic operations.
+### 2. Hybrid Magnitude Synthesis (Liftering)
+Using **Homomorphic Processing**, we operate in the log-spectral domain where the spectral envelope and excitation are additive. The magnitude of the synthesized signal $|Y_m(\omega)|$ is constructed as follows:
+
+Let $C_S$ and $C_F$ be the cepstra of the source and filter signals, respectively. We apply a low-pass lifter $L_{low}$ and a high-pass lifter $L_{high}$ to extract the desired components:
+
+$$\text{Cepstrum of } Y_m = L_{low}(C_F) + L_{high}(C_S)$$
+
+This means the synthesized magnitude spectrum $|Y_m(\omega)|$ consists of:
+- **The Envelope** from $F_m$ (Low-quefrency / Vocal tract)
+- **The Excitation** from $S_m$ (High-quefrency / Glottal source)
+
+
+
+### 3. Waveform Reconstruction
+Finally, we combine the hybrid magnitude with the original source phase to preserve the temporal pitch structure:
+
+$$Y_m(\omega) = |Y_m(\omega)| \exp(j \angle S_m(\omega))$$
+
+The time-domain frame is then recovered via IDFT and connected using the Overlap-Add (OLA) method:
+$$y_{out}[n] = \sum_{m} \text{Re} \left[ \mathcal{F}^{-1} \{ Y_m(\omega) \} \right] [n - mL]$$
 
 ## Directory Structure
 
