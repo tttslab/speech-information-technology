@@ -50,7 +50,7 @@ This demo assumes WAV files with the following specifications:
 * **Channels**: Monaural
 
 ## Acknowledgments
-The sample file `neorock38.wav` is based on free material provided by **Maoudamashii** and has been converted for this educational demo.
+The sample file `neorock38.wav` is based on free material provided by **魔王魂(Maoudamashii)** and has been converted for this educational demo.
 
 ---
 **Original Author:** Takahiro Shinozaki (Tokyo Institute of Technology)  
